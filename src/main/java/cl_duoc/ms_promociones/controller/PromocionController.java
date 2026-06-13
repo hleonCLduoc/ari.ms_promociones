@@ -2,7 +2,7 @@ package cl_duoc.ms_promociones.controller;
 
 
 import cl_duoc.ms_promociones.model.Promocion;
-import cl_duoc.ms_promociones.repository.PromocionRepository;
+import cl_duoc.ms_promociones.service.PromocionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,14 +11,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("/api/v1/promociones")
+
 public class PromocionController {
 
     @Autowired
-    private PromocionRepository promocionRepository;
+    private PromocionService promocionService;
 
     @GetMapping
     public ResponseEntity<List<Promocion>> listar(){
-        List<Promocion> promocions = promocionRepository.findAll();
+        List<Promocion> promocions = promocionService.findAll();
         if (promocions.isEmpty()){
             return ResponseEntity.noContent().build();
 
@@ -36,7 +39,13 @@ public class PromocionController {
 
     //*buscar por id
     @GetMapping ("/{id}")
-    public ResponseEntity<Promocion> buscarPorId(@PathVariable Long id){}
+    public ResponseEntity<Promocion> buscarPorId(@PathVariable Long id){
+        Promocion promocion = promocionService.buscarPorId(id);
+        if  (promocion == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(promocion);
+    }
 
 
 

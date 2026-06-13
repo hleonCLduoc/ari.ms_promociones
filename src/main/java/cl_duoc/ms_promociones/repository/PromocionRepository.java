@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 
-public class PromocionRepository extends JpaRepository<Promocion> {
+public interface PromocionRepository extends JpaRepository<Promocion, Long> {
 }
